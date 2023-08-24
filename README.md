@@ -71,30 +71,29 @@ https://leetcode.com/problems/string-compression/
 https://leetcode.com/problems/summary-ranges/
 
 ```scala
-import scala.collection.mutable
+    import scala.collection.mutable.ArrayBuffer
 
     def summaryRanges(nums: Array[Int]): List[String] = {
-        val rmap: mutable.HashMap[Int, (Int, Int)] = mutable.HashMap()
-
+        
+        var arr: ArrayBuffer[(Int, Int)] = ArrayBuffer()
         if (nums.length == 1) return nums.map(_.toString).toList
         else if (nums.isEmpty) return List()
 
-        var max: Int = 0
+        var max: Int = nums.head
         var min: Int = nums.head
 
-        for (i <- 0 to nums.length - 2) {
+         for (i <- 0 to nums.length - 2) {
             if (nums(i + 1) - nums(i) == 1) {
                 max = nums(i + 1)
-            }
-            else {
-                if (i == 0) rmap += (min -> (min -> min))
-                min = nums(i + 1)
-                max = nums(i + 1)
-                rmap += (min -> (min -> max))
-            }
-            rmap += (min -> (min -> max))
+                if (i == nums.length - 2) arr += (min -> max)
+            } else {
+            arr += (min -> max)
+            min = nums(i + 1)
+            max = nums(i + 1)
+            if (i == nums.length - 2) arr += (max -> max)
         }
-        rmap.toSeq.sortBy(_._1).map(x => if (x._1 >= x._2._2) s"${x._1}" else s"${x._1}->${x._2._2}").toList
+    }
+        arr.map(x => if (x._1 == x._2) s"${x._1}" else s"${x._1}->${x._2}").toList
   }
 ```
 
