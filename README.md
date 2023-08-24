@@ -99,15 +99,17 @@ https://leetcode.com/problems/summary-ranges/
 
 https://leetcode.com/problems/two-sum/
 
-Тут уже силы были на исходе, по факту немного халтура, но работает
-
 ```scala
-import scala.collection.mutable.ArrayBuffer
+    import scala.collection.mutable.HashMap
     
-    def twoSum(nums: Array[Int], target: Int): Array[Int] = {        
+    def twoSum(nums: Array[Int], target: Int): Array[Int] = {
+	val nmap: HashMap[Int, Int] = HashMap()
+
         for (i <- nums.indices) {
-            if (nums.indexOf(target - nums(i)) != -1 && nums.indexOf(target - nums(i)) != i) return Array(nums.indexOf(target - nums(i)), i)
-        }
-    Array(-1)
+		nmap.get(target - nums(i)) match {
+		case Some(n) => return Array(i, n)
+		case None => nmap += (nums(i) -> i)
+		}
+	Array(-1) // в случае провала
     }
 ```
