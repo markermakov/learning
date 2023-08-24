@@ -16,13 +16,32 @@ https://leetcode.com/problems/move-zeroes/
 https://leetcode.com/problems/valid-palindrome/
 
 ```scala
-def isPalindrome(s: String): Boolean = {
-  val str = s.toLowerCase.toCharArray.filter(_.isLetterOrDigit)
-      val nums: Int = if (str.length % 2 == 0) (str.length / 2) - 1 else str.length / 2
-      var check: Boolean = true
-      
-      for (i <- 0 to nums) if (str(i) != str(str.length - i - 1)) check = false
-      check
+    import scala.collection.mutable.ArrayBuffer
+
+    def isPalindrome(s: String): Boolean = {
+        val alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        val numbers = "0123456789"
+        val arr: ArrayBuffer[(Char, Char)] = ArrayBuffer()
+
+        for (i <- alphabet.indices) arr += Tuple2(alphabet(i), if (i >= 26) alphabet(i - 26) else alphabet(i))
+
+        val charMap = (arr ++ numbers.map(x => (x, x))).toMap
+
+        var newString: ArrayBuffer[Char] = ArrayBuffer()
+        for (i <- 0 to s.length - 1) {
+            charMap.get(s(i)) match {
+                case Some(_) => newString += charMap(s(i))
+                case None =>
+            }
+        }
+        
+	    var check: Boolean = true
+	    val nums: Int = if (newString.length % 2 == 0) (newString.length / 2) - 1 else newString.length / 2
+
+	    for (i <- 0 to nums) {
+            if (newString(i) != newString(newString.length - i - 1)) check = false
+	    }
+	    check
     }
 ```
 
